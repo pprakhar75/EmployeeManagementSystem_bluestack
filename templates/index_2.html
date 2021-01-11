@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    table, th, td {
+    border: 1px solid black;
+    }
+
+  input[type=text], select {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=number], select {
+  width: 20%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=submit] {
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+    </style>
+
+    <meta charset="UTF-8">
+    <!--    <title>Employee Management</title>-->
+    <title>Employee Management</title>
+</head>
+<body>
+<h1>Employee Management System</h1>
+<hr>
+<div>
+    <form action="{{ url_for('logout')}}" method="GET">
+        <button name="logoutBTN" type="submit">logout</button>
+    </form>
+</div>
+<div>Add a new Employee :<br><br>
+    <form action="{{ url_for('add')}}" method="POST">
+        Name : <input type="text" name="employee_name" required><br><br>
+        Password : <input type="text" name="password" required><br><br>
+        Gender:<input type="text" name="employee_gender" required><br><br>
+        <label for="role_add">Choose a role:</label>
+        <select id="role_add" name="employee_role" size="4" multiple>
+            <option value="Admin">Admin</option>
+            <option value="Engg Manager">Engg Manager</option>
+            <option value="Office Manager">Office Manager</option>
+            <option value="Default">Default</option>
+        </select><br><br>
+        <input type="submit" value="submit"><br><br>
+    </form>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+</div>
+<hr>
+<div> Employee Details:
+    <br>
+    <table id="table" style="width:100%">
+        <tr>
+            <th>EMPLOYEE ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Role</th>
+            <th>Button</th>
+
+        </tr>
+        {% if employee_data %}
+        {% for employee in employee_data.values() %}
+        <tr>
+            <td width="8px">{{employee['emp_id']}}</td>
+            <td>{{employee['employee_name']}}</td>
+            <td>{{employee['employee_gender']}}</td>
+            <td>{{employee['employee_role']}}</td>
+            <td>
+                <form id="delete_form" method="post">
+                    <button type="submit" formaction="/delete/{{employee['emp_id']}}">Delete</button>
+                </form>
+
+            </td>
+        </tr>
+        {% endfor%}
+        {% endif %}
+    </table>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+</div>
+
+<br><br>
+<hr>
+<br><br><br>
+<hr>
+<div>Edit Employee:
+    <br>
+    <form action="{{ url_for('edit')}}" method="POST">
+        Employee ID : <input type="number" id="employee_id" name="employee_id"><br><br>
+        Name : <input type="text" id="employee_name" name="employee_name"><br><br>
+        Gender:<input type="text" id="employee_gender" name="employee_gender"><br><br>
+        <label for="role_edit">Choose a role:</label>
+        <select id="role_edit" name="employee_role" size="4" multiple>
+            <option value="Admin">Admin</option>
+            <option value="Engg Manager">Engg Manager</option>
+            <option value="Office Manager">Office Manager</option>
+            <option value="Default">Default</option>
+        </select><br><br>
+        <input type="submit" value="Edit"><br><br>
+    </form>
+</div>
+</body>
+
+<!--<script>-->
+<!--var table = document.getElementById("table"),rIndex;-->
+
+<!--for(var i = 1; i < table.rows.length; i++)-->
+<!--{-->
+<!--table.rows[i].onclick = function()-->
+<!--{-->
+<!--rIndex = this.rowIndex;-->
+<!--console.log(rIndex);-->
+
+<!--document.getElementById("roll_number").value = this.cells[0].innerHTML;-->
+<!--document.getElementById("name").value = this.cells[1].innerHTML;-->
+<!--document.getElementById("age").value = this.cells[2].innerHTML;-->
+<!--document.getElementById("gender").value = this.cells[3].innerHTML;-->
+<!--};-->
+<!--}-->
+
+<!--</script>-->
+</html>
