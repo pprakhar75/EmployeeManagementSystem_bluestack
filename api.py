@@ -44,9 +44,8 @@ def index(emp_id=None, login_status=None):
     if request.args:
         for i in request.args.items():
             emp_id = i[1]
-            login_status = i[2]
     return render_template('index_2.html', employee_data=show_employee_details(),
-                           search_student_data=search_employee_details(emp_id=emp_id, login_status=login_status))
+                           search_employee_data=search_employee_details(emp_id=emp_id))
 
 
 @app.route('/add', methods=['POST'])

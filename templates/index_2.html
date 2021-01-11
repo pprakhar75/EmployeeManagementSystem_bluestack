@@ -54,6 +54,8 @@ div {
 
 
 
+
+
     </style>
 
     <meta charset="UTF-8">
@@ -124,6 +126,33 @@ div {
 
 <br><br>
 <hr>
+<div> Search:<br><br>
+    <form action="/home" method="get">
+        Enter : <input type="text" name="roll_number" required>
+        <input type="submit" value="Search"><br><br>
+
+    </form>
+    {% if search_employee_data %}
+    Student Details:
+    <table style="width:100%">
+        <tr>
+            <th>Empid</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Role</th>
+        </tr>
+
+        {% for employee in search_employee_data.values() %}
+        <tr>
+            <td width="8px">{{employee['emp_id']}}</td>
+            <td>{{employee['employee_name']}}</td>
+            <td>{{employee['employee_gender']}}</td>
+            <td>{{employee['employee_role']}}</td>
+        </tr>
+        {% endfor%}
+    </table>
+    {% endif %}
+</div>
 <br><br><br>
 <hr>
 <div>Edit Employee:

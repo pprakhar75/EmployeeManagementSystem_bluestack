@@ -1,19 +1,9 @@
-from model import Session, Student, Employee
+from model import Session, Employee
 from sqlalchemy import and_
 from functools import wraps
 from flask import render_template
 
 session = Session()
-
-
-def add_student_to_db(student_details):
-    if student_details:
-        row = Student(employee_name=student_details['name'],
-                      age=student_details['age'],
-                      gender=student_details['gender'])
-        session.add(row)
-        session.commit()
-        return 'Data added succcessfully'
 
 
 def add_employee_to_db(employee_details):
@@ -29,61 +19,20 @@ def add_employee_to_db(employee_details):
         return 'Employee added successfully'
 
 
-def search_student_details(roll_number=None):
-    if roll_number:
-        all_students = session.query(Student).filter_by(roll_number=roll_number).all()
-        data = {}
-        for i in all_students:
-            student_data = {}
-            student_data['roll_number'] = i.roll_number
-            student_data['name'] = i.name
-            student_data['age'] = i.age
-            student_data['gender'] = i.gender
-            data[i.roll_number] = student_data
-        return data
-    else:
-        return {}
-
-
-def search_employee_details(emp_id=None, login_status=None):
+def search_employee_details(emp_id=None):
     if emp_id:
-        all_employee = session.query(Student).filter(and_(login_status != 'd', emp_id=emp_id)).all()
+        all_employee = session.query(Employee).filter_by(emp_id=emp_id).all()
         data = {}
         for i in all_employee:
             employee_data = {}
             employee_data['emp_id'] = i.emp_id
             employee_data['employee_name'] = i.employee_name
             employee_data['employee_gender'] = i.employee_gender
+            employee_data['employee_role'] = i.employee_role
             data[i.emp_id] = employee_data  # todo to understand
         return data
     else:
         return {}
-
-
-def show_student_details(roll_number=None):
-    data = {}
-    if roll_number:
-        all_students = session.query(Student).filter_by(roll_number=roll_number).all()
-    else:
-        all_students = session.query(Student).all()
-        if not all_students:
-            data = None
-
-    for i in all_students:
-        student_data = {}
-        student_data['roll_number'] = i.roll_number
-        student_data['name'] = i.name
-        student_data['age'] = i.age
-        student_data['gender'] = i.gender
-        data[i.roll_number] = student_data
-
-    return data
-
-
-def delete_student_from_db(roll_number):
-    student_detail = session.query(Student).filter_by(roll_number=roll_number).first()
-    session.delete(student_detail)
-    session.commit()
 
 
 def show_employee_details(emp_id=None, login_status=None):
@@ -112,21 +61,6 @@ def mark_employee_deleted(emp_id):
     employee_detail = session.query(Employee).filter_by(emp_id=emp_id).first()
     employee_detail.login_status = 'd'
     session.commit()
-
-
-def edit_student(student_edit_details=None):
-    student_detail = session.query(Student).filter_by(roll_number=student_edit_details['roll_number']).first()
-    if student_detail:
-        if student_edit_details.__getitem__('name'):
-            student_detail.name = student_edit_details['name']
-        if student_edit_details.__getitem__('age'):
-            student_detail.age = student_edit_details['age']
-        if student_edit_details.__getitem__('gender'):
-            student_detail.gender = student_edit_details['gender']
-        session.commit()
-        return True
-    else:
-        return False
 
 
 def edit_employee(employee_edit_details=None):

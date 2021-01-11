@@ -22,7 +22,6 @@ class Employee(Base):
     emp_id = Column(Integer, primary_key=True, autoincrement=True)
     employee_name = Column(String(50), primary_key=True)
     password = Column(String(50))  # to encrypt
-    employee_department = Column(String(50))
     employee_gender = Column(String(10))
     employee_role = Column(String(20), default='default')
     login_status = Column(String(5))  # todo can seggregate the tables later
